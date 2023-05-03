@@ -1,0 +1,30 @@
+name: Spotify_scraper_2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+      - name: Install chrome and driver
+        run: sudo apt-get update && sudo apt-get install -y libxss1 libappindicator1 libindicator7 wget
+      - name: Download Chrome
+        run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      - name: Install Chrome
+        run: sudo dpkg -i google-chrome-stable_current_amd64.deb
+              
+      - name: Run Script
+        run: python Webscrapping_spotify.py
+      - name: my-data
+        uses: actions/upload-artifact@v2
+        with:
+          path: data.csv
