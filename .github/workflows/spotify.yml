@@ -18,10 +18,6 @@ jobs:
       - name: Install chrome and driver
         run:  LAST_VERSION="https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2FLAST_CHANGE?alt=media"
               VERSION=$(curl -s -S $LAST_VERSION)
-              if [ -d $VERSION ] ; then
-                echo "version already installed"
-                exit
-              fi
 
               rm -rf /tmp/chrome/$VERSION
               mkdir -p /tmp/chrome/$VERSION
