@@ -53,11 +53,25 @@ print("Login to the Spotifty using:" ,userid)
 
 def get_raw_data(input_url):
     
-    service = Service(executable_path=ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service)
+    s = Service('/tmp/chrome/latest/chromedriver_linux64/chromedriver')
+    options = webdriver.ChromeOptions()
+    options.binary_location = "/tmp/chrome/latest/chrome-linux/chrome"
+    options.add_argument('headless')
+    options.add_argument('--disable-infobars')
+    options.add_argument('--disable-dev-shm-usage')
+    user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'    
+    options.add_argument('user-agent={0}'.format(user_agent))
+    options.add_argument('--no-sandbox')
+    options.add_argument('--remote-debugging-port=9222')
+    options.add_argument('--homedir=/tmp/chrome/chrome-user-data-dir')
+    options.add_argument('--user-data-dir=/tmp/chrome/chrome-user-data-dir')
+    prefs = {"download.default_directory":"/tmp/chrome/chrome-user-data-di",
+           "download.prompt_for_download":False}
+  
+    options.add_experimental_option("prefs",prefs)
+    driver = webdriver.Chrome(service=s, options=options)
 
     driver.get(input_url)
-  #driver.execute("get", {'url': input_url})
     time.sleep(2)
     sleep(randint(12,14))
     wait = WebDriverWait(driver, 21)
