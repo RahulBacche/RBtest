@@ -56,7 +56,7 @@ def get_raw_data(input_url):
     #s = Service('/tmp/chrome/latest/chromedriver_linux64/chromedriver')
     s = Service(executable_path=ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
-    options.binary_location = "/tmp/chrome/latest/chrome-linux/chrome"
+    #options.binary_location = "/tmp/chrome/latest/chrome-linux/chrome"
     options.add_argument('headless')
     options.add_argument('--disable-infobars')
     options.add_argument('--disable-dev-shm-usage')
@@ -64,12 +64,12 @@ def get_raw_data(input_url):
     options.add_argument('user-agent={0}'.format(user_agent))
     options.add_argument('--no-sandbox')
     options.add_argument('--remote-debugging-port=9222')
-    options.add_argument('--homedir=/tmp/chrome/chrome-user-data-dir')
-    options.add_argument('--user-data-dir=/tmp/chrome/chrome-user-data-dir')
-    prefs = {"download.default_directory":"/tmp/chrome/chrome-user-data-di",
-           "download.prompt_for_download":False}
+    #options.add_argument('--homedir=/tmp/chrome/chrome-user-data-dir')
+    #options.add_argument('--user-data-dir=/tmp/chrome/chrome-user-data-dir')
+    #prefs = {"download.default_directory":"/tmp/chrome/chrome-user-data-di",
+    #       "download.prompt_for_download":False}
   
-    options.add_experimental_option("prefs",prefs)
+    #options.add_experimental_option("prefs",prefs)
     driver = webdriver.Chrome(service=s, options=options)
     
 
