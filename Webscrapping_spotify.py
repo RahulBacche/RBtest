@@ -53,7 +53,8 @@ print("Login to the Spotifty using:" ,userid)
 
 def get_raw_data(input_url):
     
-    s = Service('/tmp/chrome/latest/chromedriver_linux64/chromedriver')
+    #s = Service('/tmp/chrome/latest/chromedriver_linux64/chromedriver')
+    s = Service(executable_path=ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
     options.binary_location = "/tmp/chrome/latest/chrome-linux/chrome"
     options.add_argument('headless')
@@ -70,6 +71,7 @@ def get_raw_data(input_url):
   
     options.add_experimental_option("prefs",prefs)
     driver = webdriver.Chrome(service=s, options=options)
+    
 
     driver.get(input_url)
     time.sleep(2)
