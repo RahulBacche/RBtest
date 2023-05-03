@@ -1,0 +1,53 @@
+name: Spotify_scraper
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+      - name: Install chrome and driver
+        run:  LAST_VERSION="https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2FLAST_CHANGE?alt=media"
+              VERSION=$(curl -s -S $LAST_VERSION)
+              if [ -d $VERSION ] ; then
+                echo "version already installed"
+                exit
+              fi
+
+              rm -rf /tmp/chrome/$VERSION
+              mkdir -p /tmp/chrome/$VERSION
+
+              URL="https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F$VERSION%2Fchrome-linux.zip?alt=media"
+              ZIP="${VERSION}-chrome-linux.zip"
+
+              curl -# $URL > /tmp/chrome/$ZIP
+              unzip /tmp/chrome/$ZIP -d /tmp/chrome/$VERSION
+
+              URL="https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F$VERSION%2Fchromedriver_linux64.zip?alt=media"
+              ZIP="${VERSION}-chromedriver_linux64.zip"
+
+              curl -# $URL > /tmp/chrome/$ZIP
+              unzip /tmp/chrome/$ZIP -d /tmp/chrome/$VERSION
+
+              mkdir -p /tmp/chrome/chrome-user-data-dir
+
+              rm -f /tmp/chrome/latest
+              ln -s /tmp/chrome/$VERSION /tmp/chrome/latest
+              
+              sudo apt-get update
+              sudo apt-get install -y libgbm-dev
+      - name: Run Script
+        run: python Webscrapping_spotify.py
+      - name: my-data
+        uses: actions/upload-artifact@v2
+        with:
+          path: data.csv
