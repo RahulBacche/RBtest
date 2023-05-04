@@ -25,6 +25,9 @@ jobs:
       - name: Run Script
         run: python Webscrapping_spotify.py
       - name: my-data
-        uses: actions/upload-artifact@v2
-        with:
-          path: data.csv
+        run: |
+            git config --global user.email "you@example.com"
+            git config --global user.name "Rahul Bacche"
+            git add --all
+            git commit -m "Add my CSV file"
+            git push
